@@ -30,10 +30,12 @@ def pgd_slope(
     for it in range(max_it):
         beta = prox_slope(beta + (X.T @ residual) / (L * n), lambdas / L)
 
+        residual = y - X @ beta
+
         if fit_intercept:
             intercept = np.mean(residual)
 
-        residual = y - X @ beta - intercept
+        residual -= intercept
 
         theta = residual / n
         theta /= max(1, dual_norm_slope(X, theta, lambdas))
